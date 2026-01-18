@@ -1,0 +1,11 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "backend of devindeed",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "sarthak dhumal",
+  "license": "ISC"
+}
