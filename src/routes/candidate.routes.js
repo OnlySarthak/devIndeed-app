@@ -1,13 +1,11 @@
 const express = require('express');
-
+const candidateProfileRouter = require('./candidate.profile.routes');
 const candidateRouter = express.Router();
 
-candidateRouter.get('/job-list:filters')
-candidateRouter.get('/view-company:companyId')
-candidateRouter.get('/apply-company:companyId')
-candidateRouter.get('profile')
-candidateRouter.get('profile/resume')
-candidateRouter.get('profile/applied')
-candidateRouter.get('profile/premium')
+candidateRouter.use('/profile', candidateProfileRouter);
 
+candidateRouter.get('/job-list/:filters')           // search & filters
+candidateRouter.get('/view-company/:companyId')     // company public profile
+candidateRouter.post('/apply-company/:companyId')   // apply to job/company
 
+module.exports = candidateRouter;

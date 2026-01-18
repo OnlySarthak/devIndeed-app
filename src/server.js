@@ -16,8 +16,8 @@ app.use(cookieParser());
 
 const company = require('./routes/company.routes');
 const candidate = require('./routes/candidate.routes');
-const homepage = require('./routes/homepage.routes');
+const defaultList = require('./routes/homepage.routes');
 
-app.use('/', homepage);
+app.use('/', defaultList);
 app.use('/company', company);
 app.use('/candidate', candidate);
