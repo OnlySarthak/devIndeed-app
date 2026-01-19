@@ -1,33 +1,39 @@
 const express = require('express');
-const {validateLogin, validateRegister} = require('../middlewares/validators/auth.validators');
+const { validateLogin, validateRegister } = require('../middlewares/validators/auth.validators');
 const authRouter = express.Router();
 const user = require('../models/auth/auth.model');
-const verifyPassword = require('../utils/verifyPassword');
 const bcrypt = require('bcrypt');
 
 authRouter.post('/login', async (req, res) => {
     try {
-        // Find the user by email
-        const currUser = await user.findOne({ email: req.body?.email });
-        if (!currUser) {
-            return res.status(404).send("Invalid credentials");
-        }
-
+        // Validate the login data
         validateLogin(req.body);
 
-        // //check if the password is correct
-        if (!verifyPassword(req.body)) {
+        // Find the user by email
+        const currUser = await user
+            .findOne({ email: req.body.email })
+            .select('+password');
+
+        if (!currUser) {
+            return res.status(401).send("Invalid credentials");
+        }
+
+        //verify password
+        const isValid = await bcrypt.compare(
+            req.body.password,
+            currUser.password
+        );
+
+        if (!isValid) {
             return res.status(401).send("Invalid credentials");
         }
         else {      //then finaly login the user
-
             const token = await currUser.generateAuthToken(); // Generate a token for the user
             //send cookies back to the client 
             res.cookie('token', token);
 
             res.status(200).json({
                 message: "Login successful",
-                data: currUser
             });
         }
     } catch (error) {
@@ -60,7 +66,7 @@ authRouter.post('/register', async (req, res) => {
     //make user logged in 
     const token = await newUser.generateAuthToken(); // Generate a token for the user
     //send cookies back to the client
-    res.cookie('token', token); 
+    res.cookie('token', token);
 });
 
 authRouter.post('/logout', (req, res) => {

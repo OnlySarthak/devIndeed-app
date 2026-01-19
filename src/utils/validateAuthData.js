@@ -30,6 +30,5 @@ const validateForgetPasswordData = (data) => {
 
 module.exports = {
     validateRegistrationData,
-    validateLoginData,
-    validateForgetPasswordData
+    validateLoginData
 };
