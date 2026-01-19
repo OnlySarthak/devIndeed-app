@@ -27,3 +27,9 @@ const validateForgetPasswordData = (data) => {
     }
     return errors;
 };
+
+module.exports = {
+    validateRegistrationData,
+    validateLoginData,
+    validateForgetPasswordData
+};

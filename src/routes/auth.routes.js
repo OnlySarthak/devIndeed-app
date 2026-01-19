@@ -1,8 +1,78 @@
 const express = require('express');
-
+const {validateLogin, validateRegister} = require('../middlewares/validators/auth.validators');
 const authRouter = express.Router();
+const user = require('../models/auth/auth.model');
+const verifyPassword = require('../utils/verifyPassword');
+const bcrypt = require('bcrypt');
 
-authRouter.post('/login', )
-authRouter.post('/register', )
-authRouter.post('/logout', )
-authRouter.post('/forget-password', )
+authRouter.post('/login', async (req, res) => {
+    try {
+        // Find the user by email
+        const currUser = await user.findOne({ email: req.body?.email });
+        if (!currUser) {
+            return res.status(404).send("Invalid credentials");
+        }
+
+        validateLogin(req.body);
+
+        // //check if the password is correct
+        if (!verifyPassword(req.body)) {
+            return res.status(401).send("Invalid credentials");
+        }
+        else {      //then finaly login the user
+
+            const token = await currUser.generateAuthToken(); // Generate a token for the user
+            //send cookies back to the client 
+            res.cookie('token', token);
+
+            res.status(200).json({
+                message: "Login successful",
+                data: currUser
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+});
+
+authRouter.post('/register', async (req, res) => {
+    // check if user alsready exists
+    const existingUser = await user.find({ email: req.body.email });
+
+    if (existingUser.length > 0) {
+        return res.status(400).send("User already exists with this email");
+    }
+
+    //validate the user data
+    validateRegister(req.body);
+
+    //encrypt the password
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const newUser = new user({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword, // Store the hashed password
+    });
+
+    await newUser.save(); // Save the user to the database
+
+    //make user logged in 
+    const token = await newUser.generateAuthToken(); // Generate a token for the user
+    //send cookies back to the client
+    res.cookie('token', token); 
+});
+
+authRouter.post('/logout', (req, res) => {
+    res.clearCookie('token',
+        {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None',
+            path: '/', // whatever was used originally
+        }
+    );
+    res.json({ message: 'Logout successful' });
+});
+
+export default authRouter;
