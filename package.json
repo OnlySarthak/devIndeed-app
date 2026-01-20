@@ -6,7 +6,7 @@
   "main": "src/server.js",
   "scripts": {
     "test": "jest",
-    "start": "node src/server.js"
+    "start": "nodemon src/server.js"
   },
   "author": "sarthak dhumal",
   "license": "ISC",

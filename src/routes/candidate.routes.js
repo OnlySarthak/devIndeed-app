@@ -1,11 +1,14 @@
 const express = require('express');
-// const candidateProfileRouter = require('./candidate.profile.routes');
-// const candidateRouter = express.Router();
+const candidateProfileRouter = require('./candidate.profile.routes');
+const candidateRouter = express.Router();
+const auth = require('../middlewares/auth');
+const candidateJobRouter = require('./candidate.job');
 
-// candidateRouter.use('/profile', candidateProfileRouter);
+// Middleware to protect routes
+candidateProfileRouter.use(auth);
+candidateJobRouter.use(auth);
 
-// candidateRouter.get('/job-list/:filters')           // search & filters
-// candidateRouter.get('/view-company/:companyId')     // company public profile
-// candidateRouter.post('/apply-company/:companyId')   // apply to job/company
+candidateRouter.use('/profile', candidateProfileRouter);
+candidateRouter.use('/jobs', candidateJobRouter);
 
-// module.exports = candidateRouter;
+module.exports = candidateRouter;

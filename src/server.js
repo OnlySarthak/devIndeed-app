@@ -15,17 +15,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 // const company = require('./routes/company.routes');
-// const candidate = require('./routes/candidate.routes');
+const candidate = require('./routes/candidate.routes');
 // const defaultList = require('./routes/homepage.routes');
 const auth = require('./routes/auth.routes');
 
 app.use('/auth', auth);
-// app.use('/', defaultList);
-//
-
+app.use('/candidate', candidate);
 // app.use('/', candidate);
 // app.use('/company', company);
-// app.use('/candidate', candidate);
 
 const PORT = process.env.PORT || 5000;
 
