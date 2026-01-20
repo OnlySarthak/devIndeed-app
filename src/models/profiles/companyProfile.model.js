@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const companyProfileSchema = new Schema({
-    _id: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'user'
+        ref: 'user',
+        unique: true
     },
     name: {
         type: String,
@@ -30,7 +31,6 @@ const companyProfileSchema = new Schema({
     },
     location : [{
         type: String,
-        required: false    
     }],
     website: {
         type: String,
@@ -52,6 +52,6 @@ const companyProfileSchema = new Schema({
         type: Date,
         default: Date.now
     }
-});
+},{ timestamps: true });
 
 module.exports = mongoose.model('companyProfile', companyProfileSchema);

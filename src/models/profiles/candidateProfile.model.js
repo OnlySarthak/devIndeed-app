@@ -2,23 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const candidateProfileSchema = new Schema({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
         required: true,
-        ref: 'user'
+        unique: true
     },
     name: {
         type: String,
         required: true
     },
-    photo : {
+    photo: {
         type: String,
         required: false
-    },
-    role: {
-        type: String,
-        enum: ['candidate', 'company', 'admin'],
-        default: 'candidate'
     },
     isVerified: {
         type: Boolean,
@@ -52,14 +48,6 @@ const candidateProfileSchema = new Schema({
         type: String,
         required: false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('candidateProfile', candidateProfileSchema);
