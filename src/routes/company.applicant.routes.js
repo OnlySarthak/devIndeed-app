@@ -6,6 +6,13 @@ const {
     listOfApplicants
 } = require('../controllers/application.controller');
 
+//middleware for role checking 
+//it is because application is the thing both company and candidate deal with
+const { isCompany } = require('../middlewares/roleCheckers');
+
+//apply middleware to all routes in this router
+companyApplicantRouter.use(isCompany);
+
 companyApplicantRouter.get('/list/:jobId', listOfApplicants);
 
 companyApplicantRouter.get('/:jobId/:applicantId', getApplicantDetails);

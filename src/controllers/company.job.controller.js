@@ -1,4 +1,4 @@
-const Job = require('../models/jobs/job.model');
+const Job = require('../models/job.model');
 
 const createJob = (req, res) => {
     try {

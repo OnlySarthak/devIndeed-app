@@ -81,27 +81,6 @@ const enablePremiumAccess = async (req, res) => {
   }
 };
 
-const applyToJob = async (req, res) => {
-    try{
-        currCandidateId = req.user.id;
-        const companyId = req.params.companyId;
-
-        verifyApplicationData(currCandidateId, companyId);
-
-        applicationModel.create({
-            candidateId: currCandidateId,
-            jobId: companyId,
-        }).
-        then((newApplication) => {
-            res.status(201).json({ message: 'Application submitted successfully' });
-        }).catch((error) => {
-            res.status(500).json({ error: 'Failed to submit application' });
-        });
-    }catch(error){
-        res.status(400).json({ error: error.message });
-    }
-}
-
 module.exports = {
   updateProfileDetails,
   getProfileDetails,

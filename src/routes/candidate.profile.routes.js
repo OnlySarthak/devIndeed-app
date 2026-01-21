@@ -1,5 +1,6 @@
 const express = require('express');
 const candidateProfileRouter = express.Router();
+const listOfApplicationsforCandidate = require('../controllers/application.controller').listOfApplicationsforCandidate;
 
 const {
   updateProfileDetails,
@@ -14,14 +15,8 @@ candidateProfileRouter.get('/details', getProfileDetails);
 candidateProfileRouter.get('/premium', checkPremiumAccess);
 candidateProfileRouter.put('/premium', enablePremiumAccess);
 
+candidateProfileRouter.get('/status', listOfApplicationsforCandidate);
+
 module.exports = candidateProfileRouter;
 
 // candidateProfileRouter.get('/resume')
-// candidateProfileRouter.get('/applied', (req, res) => {
-//     try{
-//         const currCandidateId = mongoose.Types.ObjectId(req.user.id);
-
-//         application.find({ candidateId: currCandidateId })
-//             .then(applications => {
-
-//     }

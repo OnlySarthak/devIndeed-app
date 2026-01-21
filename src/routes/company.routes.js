@@ -1,16 +1,15 @@
 const express = require('express');
-const companyJobRouter = require('./company.job.routes');
-const auth = require('../middlewares/auth');
-
 const companyRouter = express.Router();
+
+const companyJobRouter = require('./company.job.routes');
+const companyProfileRouter = require('./company.profile.routes');
+const companyApplicantRouter = require('./company.applicant.routes');
+
+const auth = require('../middlewares/auth');
 companyRouter.use(auth);
 
+companyRouter.use('/profile', companyProfileRouter);
 companyRouter.use('/jobs', companyJobRouter);
-// const companyApplicantRouter = require('./company.applicant.routes');
-
-// companyRouter.use('/applicant', companyApplicantRouter);
-
-// companyRouter.get('/company-profile', )
-// companyRouter.put('/company-profile', )
+companyRouter.use('/applicant', companyApplicantRouter);
 
 module.exports = companyRouter;

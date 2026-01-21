@@ -5,7 +5,7 @@ const { createJob,
     getAllHistoryJobs, 
     getJobById, 
     updateJob, 
-    deleteJob } = require('../controllers/job.controller');
+    deleteJob } = require('../controllers/company.job.controller');
 
 
 companyJobRouter.post('/', createJob);

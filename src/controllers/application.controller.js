@@ -74,9 +74,21 @@ const listOfApplicants = async (req, res) => {
     }
 }
 
+const listOfApplicationsforCandidate = async (req, res) => {
+    try {
+        const applications = await applicationModel
+            .find({ candidateId: req.user.id })
+            .populate('jobId', 'title company location');   
+        return res.status(200).json(applications);
+    } catch (error) {
+        return res.status(500).json({ error: "Server error" });
+    }
+}
+
 module.exports = {
     createOrUpdateApplication,
     getApplicantDetails,
-    listOfApplicants
+    listOfApplicants,
+    listOfApplicationsforCandidate
 };
 
