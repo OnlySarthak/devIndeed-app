@@ -18,6 +18,24 @@ const verifyApplicationData = (currCandidateId, companyId) => {
         });
 };
 
+const verifyExistingApplication = (applicantId, jobId) => {
+    //verify existing application
+    applicationModel.findOne({
+        applicantId: applicantId,
+        jobId: jobId
+        }).then((application) => {
+            if(application) {
+                return true;
+            }
+            return false;
+        }
+    ).catch((err) => {
+        console.error('Error verifying existing application:', err);
+        return false;
+    });
+};
+
 module.exports = {
-    verifyApplicationData
+    verifyApplicationData,
+    verifyExistingApplication
 }

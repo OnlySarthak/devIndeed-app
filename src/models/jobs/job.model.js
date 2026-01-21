@@ -14,7 +14,8 @@ const jobSchema = new Schema({
   },
   currentVacancy : {
     type: Number,
-    required: true
+    required: true,
+    min: 0
   },
   title: {
     type: String,
@@ -30,17 +31,18 @@ const jobSchema = new Schema({
   },
   salary: {
     type: Number,
-    required: true
+    required: true,
+    min: 0
   },
-  company: {
+  companyId: {
     type: Schema.Types.ObjectId,
     ref: 'companyProfile',
     required: true
   },
-    postedDate: {
+  postedDate: {
     type: Date,
     default: Date.now
   },
-});
+},{ timestamps: true });
 
 module.exports = mongoose.model('job', jobSchema);
