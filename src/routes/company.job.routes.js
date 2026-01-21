@@ -1,13 +1,14 @@
-// const express = require('express');
-// const companyJobRouter = express.Router();
+const express = require('express');
+const companyJobRouter = express.Router();
 
-// // companyJobRouter.post('/post', )
+companyJobRouter.post('/', createJob);
 
-// companyJobRouter.get('/view', )
-// companyJobRouter.get('/view/history', )
+companyJobRouter.get('/', getAllJobs);
 
-// companyJobRouter.get('/view/:id', )
-// companyJobRouter.put('/edit/:id', )
-// companyJobRouter.delete('/delete/:id', )
+companyJobRouter.get('/:id', getJobById);
 
-// module.exports = companyJobRouter;
+companyJobRouter.put('/:id', updateJob);
+
+companyJobRouter.delete('/:id', deleteJob);
+
+module.exports = companyJobRouter;
