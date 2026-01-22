@@ -35,7 +35,33 @@ const verifyExistingApplication = (applicantId, jobId) => {
     });
 };
 
+const updateHistoryAndHiredCnt = async (jobId, status) => {
+    try {
+        if(status === 'accepted'){
+            //update model to set isHistory to true
+            const job = await jobModel.findOneAndUpdate(
+                { _id: jobId }, 
+                { isHistory: true },
+                { new: true });
+
+            //update hired count
+            const updatedprofile = await companyProfileModel.findOneAndUpdate(
+                { userId: job.companyId },
+                { $inc: { hiredCount: 1 } },
+                { new: true });
+
+            return null;
+        }
+        return null;
+    } catch (err) {
+        console.error('Error updating isHistory flag:', err);
+        return null;
+    }
+};
+
+
 module.exports = {
     verifyApplicationData,
-    verifyExistingApplication
+    verifyExistingApplication,
+    updateHistoryAndHiredCnt
 }

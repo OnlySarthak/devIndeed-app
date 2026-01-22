@@ -8,16 +8,16 @@ const { createJob,
     deleteJob } = require('../controllers/company.job.controller');
 
 
-companyJobRouter.post('/', createJob);
+companyJobRouter.post('/create', createJob);
 
-companyJobRouter.get('/', getAllJobs);
+companyJobRouter.get('/lists', getAllJobs);
 
-companyJobRouter.get('/', getAllHistoryJobs);
+companyJobRouter.get('/listOfHistoryJobs', getAllHistoryJobs);
 
-companyJobRouter.get('/:id', getJobById);
+companyJobRouter.get('/view/:id', getJobById);
 
-companyJobRouter.put('/:id', updateJob);
+companyJobRouter.put('/update/:id', updateJob);
 
-companyJobRouter.delete('/:id', deleteJob);
+companyJobRouter.delete('/delete/:id', deleteJob);
 
 module.exports = companyJobRouter;

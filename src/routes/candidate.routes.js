@@ -1,12 +1,16 @@
 const express = require('express');
 const candidateProfileRouter = require('./candidate.profile.routes');
+
 const candidateRouter = express.Router();
-const auth = require('../middlewares/auth');
 const candidateJobRouter = require('./candidate.job');
+const auth = require('../middlewares/auth');
+const { isCandidate} = require('../middlewares/roleCheckers');
 
 // Middleware to protect routes
-candidateProfileRouter.use(auth);
-candidateJobRouter.use(auth);
+candidateRouter.use(auth);
+
+// Middleware to check candidate role
+candidateRouter.use(isCandidate);
 
 candidateRouter.use('/profile', candidateProfileRouter);
 candidateRouter.use('/jobs', candidateJobRouter);

@@ -1,24 +1,31 @@
 const applicationModel = require('../models/application/application.model');
-const { verifyApplicationData } = require('../services/application.services');
-const candidateProfileModel = require('../models/candidate/candidateProfile.model');
+const { verifyApplicationData ,
+    updateHistoryAndHiredCnt
+} = require('../services/application.services');
 
-const createOrUpdateApplication = (req, res) => {
+const updateApplication = async (req, res) => {
     try {
+        const {candidateId, jobId} = req.params;
+        const {status} = req.body;
+
         //verify application data
-        const isValid = verifyApplicationData(req.params.applicantId, req.user.id);
+        const isValid = verifyApplicationData(candidateId, jobId);
 
         if (!isValid) {
             return res.status(400).json({ error: "Invalid application data" });
         }
 
-        //create or update application status
-        const updatedApplication = applicationModel.findOneAndUpdate({
-            candidateId: req.params.applicantId,
-            jobId: req.params.jobId
+        //update application status
+        const updatedApplication = await applicationModel.findAndUpdate({
+            candidateId,
+            jobId
         }, {
-            status: req.body.status,
-            updatedDate: Date.now()
+            status
         }, { new: true, upsert: true });
+
+        //update isHistory flag of job and profile hired count 
+        //  if status is accepted
+        updateHistoryAndHiredCnt(jobId, status);
 
         return res.status(200).json(updatedApplication);
     } catch (error) {
@@ -74,21 +81,10 @@ const listOfApplicants = async (req, res) => {
     }
 }
 
-const listOfApplicationsforCandidate = async (req, res) => {
-    try {
-        const applications = await applicationModel
-            .find({ candidateId: req.user.id })
-            .populate('jobId', 'title company location');   
-        return res.status(200).json(applications);
-    } catch (error) {
-        return res.status(500).json({ error: "Server error" });
-    }
-}
 
 module.exports = {
-    createOrUpdateApplication,
+    updateApplication,
     getApplicantDetails,
     listOfApplicants,
-    listOfApplicationsforCandidate
 };
 

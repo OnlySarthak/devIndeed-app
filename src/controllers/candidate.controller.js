@@ -86,5 +86,4 @@ module.exports = {
   getProfileDetails,
   checkPremiumAccess,
   enablePremiumAccess,
-  applyToJob
 };
