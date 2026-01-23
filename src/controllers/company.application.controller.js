@@ -81,7 +81,6 @@ const listOfApplicants = async (req, res) => {
     }
 }
 
-
 module.exports = {
     updateApplication,
     getApplicantDetails,

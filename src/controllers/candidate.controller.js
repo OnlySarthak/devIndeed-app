@@ -1,12 +1,8 @@
 const mongoose = require('mongoose');
 const candidateProfile = require('../models/profiles/candidateProfile.model');
-const validateCandidateProfile = require('../utils/validators/candidateProfile.validator');
 
 const updateProfileDetails = async (req, res) => {
   try {
-    // validate data
-    validateCandidateProfile(req.body);
-
     const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
 
     const updatedProfile = await candidateProfile.findOneAndUpdate(

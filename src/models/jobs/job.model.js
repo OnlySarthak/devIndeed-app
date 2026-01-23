@@ -15,7 +15,18 @@ const jobSchema = new Schema({
   currentVacancy : {
     type: Number,
     required: true,
-    min: 0
+    min: 0,
+    max : function() { return this.totalVacancy; }
+  },
+  totalVacancy: {
+    type: Number,
+    required: true,
+    min: 0,
+    max : 200
+  },
+  requirements: {
+    type: String,
+    required: true
   },
   title: {
     type: String,

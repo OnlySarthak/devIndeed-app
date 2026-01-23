@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const {
   validateLoginData,
   validateRegistrationData
-} = require('../utils/validators/authdata.validator.js');
+} = require('../middlewares/validators/authdata.validator.js');
 
 const login = async (req, res) => {
   try {

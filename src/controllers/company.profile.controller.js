@@ -1,16 +1,9 @@
 const companyProfileModel = require('../models/profiles/companyProfile.model');
-const validateCompanyProfile = require('../validators/companyProfile.validator');
 
 const createCompanyProfile = (req, res) => {
     try{
         const userId = req.user.id;
         const {  name, type, logoUrl, description, location, website, phone } = req.body;
-
-        //validate profile data
-        const { error } = validateCompanyProfile(req.body);
-        if (error) {
-            return res.status(400).json({ message: error.details[0].message });
-        }
 
         //create new profile
         const newProfile = new companyProfileModel({
@@ -51,12 +44,6 @@ const updateCompanyProfile = async (req, res) => {
     try {
         const userId = req.user.id;
         const { name, type, logoUrl, description, location, website, phone } = req.body;
-
-        //validate profile data
-        const { error } = validateCompanyProfile(req.body);
-        if (error) {
-            return res.status(400).json({ message: error.details[0].message });
-        }
 
         //update profile
         const updatedProfile = await companyProfileModel.findOneAndUpdate(

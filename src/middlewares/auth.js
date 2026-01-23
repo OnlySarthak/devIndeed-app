@@ -1,4 +1,3 @@
-const user = require('../models/auth/auth.model'); // Adjust the path as necessary
 const jwt = require('jsonwebtoken');
 
 const auth = async (req, res, next) => {
@@ -10,7 +9,9 @@ const auth = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // log(decoded)
+
+        req.user = decoded;
+        
         next();
     } catch (error) {
         res.status(401).json({ message: 'Invalid token.' });

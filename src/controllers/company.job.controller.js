@@ -1,13 +1,8 @@
-const Job = require('../models/job.model');
+const Job = require('../models/jobs/job.model');
 
 const createJob = (req, res) => {
     try {
         const { title, description, requirements, salary, location, totalVacancy } = req.body;
-
-        // Basic validation
-        if (!title || !description || !requirements || !salary || !location || !totalVacancy) {
-            return res.status(400).json({ error: "All fields are required" });
-        }
 
         //deside job is history or not
         const isHistory = totalVacancy === 0 ? true : false;
