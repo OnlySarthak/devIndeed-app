@@ -1,14 +1,14 @@
 const user = require('../models/auth/auth.model');
 const bcrypt = require('bcrypt');
 const {
-  validateLogin,
+  validateLoginData,
   validateRegistrationData
 } = require('../utils/validators/authdata.validator.js');
 
 const login = async (req, res) => {
   try {
     // Validate the login data
-    validateLogin(req.body);
+    validateLoginData(req.body);
 
     // Find the user by email
     const currUser = await user

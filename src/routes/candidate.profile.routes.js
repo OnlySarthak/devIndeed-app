@@ -12,6 +12,8 @@ const {
   enablePremiumAccess
 } = require('../controllers/candidate.controller');
 
+
+
 candidateProfileRouter.put('/details', updateProfileDetails);
 candidateProfileRouter.get('/details', getProfileDetails);
 
