@@ -4,17 +4,22 @@ const {
     listOfApplicationsforCandidate,
     deleteApplication
 } = require('../controllers/candidate.application.controller');
+const {
+  validateCreateCandidateProfile,
+  validateUpdateCandidateProfile
+} = require('../middlewares/validators/candidateProfile.validator');
 
 const {
+  createCandidateProfile,
   updateProfileDetails,
   getProfileDetails,
   checkPremiumAccess,
   enablePremiumAccess
-} = require('../controllers/candidate.controller');
+} = require('../controllers/candidate.profile.controller');
 
+candidateProfileRouter.put('/createCandidateProfile', validateCreateCandidateProfile, createCandidateProfile);
 
-
-candidateProfileRouter.put('/details', updateProfileDetails);
+candidateProfileRouter.put('/details', validateUpdateCandidateProfile, updateProfileDetails);
 candidateProfileRouter.get('/details', getProfileDetails);
 
 candidateProfileRouter.get('/premium', checkPremiumAccess);

@@ -1,6 +1,29 @@
 const mongoose = require('mongoose');
 const candidateProfile = require('../models/profiles/candidateProfile.model');
 
+const createCandidateProfile = async (req, res) => {
+  try {
+    const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
+    const existingProfile = await candidateProfile.findOne({ candidateId: currCandidateId });
+
+    if (existingProfile) {
+      return res.status(400).json({ error: "Profile already exists" });
+    }
+
+    const newProfile = new candidateProfile({
+      candidateId: currCandidateId,
+      ...req.body
+    });
+    await newProfile.save();
+    res.status(201).json({
+      message: "Profile created successfully",
+      profile: newProfile
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const updateProfileDetails = async (req, res) => {
   try {
     const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
@@ -78,6 +101,7 @@ const enablePremiumAccess = async (req, res) => {
 };
 
 module.exports = {
+  createCandidateProfile,
   updateProfileDetails,
   getProfileDetails,
   checkPremiumAccess,
