@@ -45,24 +45,8 @@ const validateLoginData = (req, res, next) => {
     }
 };
 
-const validateForgetPasswordData = (req, res, next) => {
-    try {
-        const { email } = req.body;
-        const errors = [];
-        if(email === undefined || !/^\S+@\S+\.\S+$/.test(email)) {
-            errors.push('Invalid or missing email');
-        }
-        if(errors.length > 0) {
-            return res.status(400).json({ errors });
-        }
-        next();
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
-    }
-};
 
 module.exports = {
     validateRegistrationData,
     validateLoginData,
-    validateForgetPasswordData
 };

@@ -3,6 +3,8 @@ const connectDB = require('./config/database');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
+const mongoose = require('mongoose');
+
 
 const app = express();
 
@@ -14,15 +16,15 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// const company = require('./routes/company.routes');
+const company = require('./routes/company.routes');
 const candidate = require('./routes/candidate.routes');
 // const defaultList = require('./routes/homepage.routes');
 const auth = require('./routes/auth.routes');
 
 app.use('/auth', auth);
 app.use('/candidate', candidate);
-// app.use('/', candidate);
-// app.use('/company', company);
+app.use('/company', company);
+
 
 const PORT = process.env.PORT || 5000;
 

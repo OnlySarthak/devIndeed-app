@@ -3,15 +3,19 @@ const candidateProfile = require('../models/profiles/candidateProfile.model');
 
 const createCandidateProfile = async (req, res) => {
   try {
-    const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
-    const existingProfile = await candidateProfile.findOne({ candidateId: currCandidateId });
+    const currCandidateUserId = req.user.id;
+    const existingProfile = await candidateProfile.findOne({ userId: currCandidateUserId });
+
+    console.log(currCandidateUserId ," ", existingProfile);
+    
+    console.log("candidate profile error");
 
     if (existingProfile) {
       return res.status(400).json({ error: "Profile already exists" });
     }
 
     const newProfile = new candidateProfile({
-      candidateId: currCandidateId,
+      userId: currCandidateUserId,
       ...req.body
     });
     await newProfile.save();
@@ -26,10 +30,10 @@ const createCandidateProfile = async (req, res) => {
 
 const updateProfileDetails = async (req, res) => {
   try {
-    const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
+    const currCandidateUserId = req.user.id;
 
     const updatedProfile = await candidateProfile.findOneAndUpdate(
-      { candidateId: currCandidateId },
+      { userId: currCandidateUserId },
       { ...req.body },
       { new: true, upsert: true }
     );
@@ -46,10 +50,10 @@ const updateProfileDetails = async (req, res) => {
 
 const getProfileDetails = async (req, res) => {
   try {
-    const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
+    const currCandidateUserId = req.user.id;
 
     const profile = await candidateProfile.findOne({
-      candidateId: currCandidateId
+      userId: currCandidateUserId
     });
 
     if (!profile) {
@@ -65,10 +69,10 @@ const getProfileDetails = async (req, res) => {
 
 const checkPremiumAccess = async (req, res) => {
   try {
-    const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
+    const currCandidateUserId = req.user.id;
 
     const profile = await candidateProfile.findOne({
-      candidateId: currCandidateId,
+      userId: currCandidateUserId,
       isPremium: true
     });
 
@@ -85,10 +89,10 @@ const checkPremiumAccess = async (req, res) => {
 
 const enablePremiumAccess = async (req, res) => {
   try {
-    const currCandidateId = new mongoose.Types.ObjectId(req.user.id);
+    const currCandidateUserId = req.user.id;
 
     await candidateProfile.findOneAndUpdate(
-      { candidateId: currCandidateId },
+      { userId: currCandidateUserId },
       { isPremium: true },
       { new: true }
     );

@@ -1,20 +1,22 @@
 const Job = require('../models/jobs/job.model');
 
-const createJob = (req, res) => {
+const createJob = async (req, res) => {
     try {
         const { title, description, requirements, salary, location, totalVacancy } = req.body;
 
         //deside job is history or not
         const isHistory = totalVacancy === 0 ? true : false;
-
+        console.log();
+        
         //create new job
-        const newJob = new Job({
+        const newJob = await new Job({
             title,
             description,
             requirements,
             salary,
             location,
             totalVacancy,
+            currentVacancy: totalVacancy,
             isHistory,
             companyId: req.user.id
         }).save();
@@ -50,6 +52,7 @@ const getAllHistoryJobs = async (req, res) => {
 
 const getJobById = async (req, res) => {
     try {
+        log(req.params.id)
         const job = await Job.findById(req.params.id);  
         if (!job) {
             return res.status(404).json({ error: "Job not found" });

@@ -14,6 +14,8 @@ const validateCreateCompanyProfile = (req, res, next) => {
     const data = req.body;
 
     const errors = [];
+    console.log("here");
+    
 
     if (!data || Object.keys(data).length === 0) {
       errors.push("Profile data is required");

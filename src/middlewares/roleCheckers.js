@@ -1,4 +1,6 @@
 const isCompany = (req, res, next) => {
+    console.log(req.user);
+    
     if (req.user.role !== 'company') {
         return res.status(403).json({ error: 'Access denied. Company role required.' });
     }

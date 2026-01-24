@@ -11,8 +11,7 @@ const { isCompany } = require('../middlewares/roleCheckers');
 companyRouter.use(auth);
 
 //middleware for role checking 
-companyApplicantRouter.use(isCompany);
-
+companyRouter.use(isCompany);
 
 companyRouter.use('/profile', companyProfileRouter);
 companyRouter.use('/jobs', companyJobRouter);

@@ -1,34 +1,36 @@
 const jobModel = require('../models/jobs/job.model');
+const applicationModel = require('../models/applications/application.model');
+const companyProfileModel = require('../models/profiles/companyProfile.model');
 
-const verifyApplicationData = (currCandidateId, companyId) => {
+const verifyApplicationData = async (jobId) => {
+  try {
+    const job = await jobModel.findOne({
+      _id: jobId,
+      isHistory: false,
+      currentVacancy: { $gt: 0 }
+    });
+    
+    console.log(job);
 
-    //verify job data
-    jobModel.findOne({
-        companyId: companyId,
-        isHistory: false,
-        currentVacancy: { $gt: 0 }
-        }).then((job) => {
-            if(job) {
-                return true;
-            }
-            return false;
-        }).catch((err) => {
-            console.error('Error verifying job data:', err);
-            return false;
-        });
+    return !!job; // true if found, false if not
+  } catch (err) {
+    console.error("Error verifying job data:", err);
+    return false;
+  }
 };
 
-const verifyExistingApplication = (applicantId, jobId) => {
+
+const verifyExistingApplication = (candidateId, jobId) => {
     //verify existing application
     applicationModel.findOne({
-        applicantId: applicantId,
-        jobId: jobId
-        }).then((application) => {
-            if(application) {
-                return true;
-            }
-            return false;
+        candidateId,
+        jobId
+    }).then((application) => {
+        if (application) {
+            return true;
         }
+        return false;
+    }
     ).catch((err) => {
         console.error('Error verifying existing application:', err);
         return false;
@@ -37,13 +39,14 @@ const verifyExistingApplication = (applicantId, jobId) => {
 
 const updateHistoryAndHiredCnt = async (jobId, status) => {
     try {
-        if(status === 'accepted'){
+        if (status === 'accepted') {
             //update model to set isHistory to true
             const job = await jobModel.findOneAndUpdate(
-                { _id: jobId }, 
+                { _id: jobId },
                 { isHistory: true },
                 { new: true });
 
+            //update hired count
             //update hired count
             const updatedprofile = await companyProfileModel.findOneAndUpdate(
                 { userId: job.companyId },

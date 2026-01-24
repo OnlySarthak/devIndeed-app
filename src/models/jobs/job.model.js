@@ -3,20 +3,13 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const jobSchema = new Schema({
-  jobId: {
-    type: String,
-    required: true,
-    unique: true
-  },
   isHistory: {
     type: Boolean,
     default: false
   },
   currentVacancy : {
     type: Number,
-    required: true,
     min: 0,
-    max : function() { return this.totalVacancy; }
   },
   totalVacancy: {
     type: Number,

@@ -49,22 +49,24 @@ const validateCreateCandidateProfile = (req, res, next) => {
       throw new Error("Location must be a string");
     }
 
+    
     if (phone && !/^\+?[0-9]{7,15}$/.test(phone)) {
       throw new Error("Invalid phone number format");
     }
-
+    
     if (appliedJobs && !Array.isArray(appliedJobs)) {
       throw new Error("Applied jobs must be an array");
     }
-
+    
     if (appliedJobs && appliedJobs.some(jobId => typeof jobId !== 'string')) {
       throw new Error("Each applied job ID must be a string");
     }
-
+    
+    
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
-
+    
     next();
   } catch (error) {
     throw new Error(`Profile validation error: ${error.message}`);

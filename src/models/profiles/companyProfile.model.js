@@ -1,57 +1,66 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const companyProfileSchema = new Schema({
+const companyProfileSchema = new Schema(
+  {
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'user',
-        unique: true
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+      unique: true
     },
-    name: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        enum: ['service', 'product', 'startup', 'enterprise'],
-        required: true
-    },
-    isVerified: {
-        type: Boolean,
-        default: false
-    },
-    logoUrl: {
-        type: String,
-        required: false
-    },
-    description: {
-        type: String,
-        required: false
-    },
-    location : [{
-        type: String,
-    }],
-    website: {
-        type: String,
-        required: false
-    },
-    noOfRecruitedCandidates: {
-        type: Number,
-        default: 0
-    },
-    phone: {
-        type: String,
-        required: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    }
-},{ timestamps: true });
 
-module.exports = mongoose.model('companyProfile', companyProfileSchema);
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+
+    type: {
+      type: String,
+      enum: ["service", "product", "startup", "enterprise"],
+      required: true
+    },
+
+    // admin-controlled
+    isVerified: {
+      type: Boolean,
+      default: false,
+      select: false
+    },
+
+    logoUrl: {
+      type: String
+    },
+
+    description: {
+      type: String,
+      minlength: 20
+    },
+
+    location: {
+      type: [String],
+      required: true,
+      validate: v => v.length > 0
+    },
+
+    website: {
+      type: String,
+      required: true
+    },
+
+    phone: {
+      type: String,
+      required: true
+    },
+
+    // system-managed
+    noOfRecruitedCandidates: {
+      type: Number,
+      default: 0
+    }
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("companyProfile", companyProfileSchema);

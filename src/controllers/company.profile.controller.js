@@ -2,6 +2,8 @@ const companyProfileModel = require('../models/profiles/companyProfile.model');
 
 const createCompanyProfile = (req, res) => {
     try{
+        console.log("here");
+        
         const userId = req.user.id;
         const {  name, type, logoUrl, description, location, website, phone } = req.body;
 
@@ -17,6 +19,8 @@ const createCompanyProfile = (req, res) => {
             phone,
         });
 
+        console.log("hello");
+        
         newProfile.save()
         .then(profile => res.status(201).json(profile))
         .catch(err => res.status(500).json({ message: 'Server Error', error: err.message }));

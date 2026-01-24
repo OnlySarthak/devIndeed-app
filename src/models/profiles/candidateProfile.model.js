@@ -48,6 +48,10 @@ const candidateProfileSchema = new Schema({
         type: String,
         required: false
     },
+    isPremium: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('candidateProfile', candidateProfileSchema);

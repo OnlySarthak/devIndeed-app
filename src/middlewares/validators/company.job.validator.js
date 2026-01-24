@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 
 const validateCreateJob = (req, res, next) => {
   const {
-    jobId,
-    currentVacancy,
     totalVacancy,
     requirements,
     title,
@@ -16,9 +14,6 @@ const validateCreateJob = (req, res, next) => {
   const errors = [];
 
   // ---- REQUIRED STRING FIELDS ----
-  if (!jobId || typeof jobId !== "string") {
-    errors.push("jobId is required and must be a string");
-  }
 
   if (!requirements || typeof requirements !== "string") {
     errors.push("requirements is required and must be a string");
@@ -41,26 +36,10 @@ const validateCreateJob = (req, res, next) => {
     errors.push("totalVacancy must be a number between 0 and 200");
   }
 
-  if (currentVacancy === undefined || typeof currentVacancy !== "number" || currentVacancy < 0) {
-    errors.push("currentVacancy must be a non-negative number");
-  }
-
-  if (
-    typeof currentVacancy === "number" &&
-    typeof totalVacancy === "number" &&
-    currentVacancy > totalVacancy
-  ) {
-    errors.push("currentVacancy cannot be greater than totalVacancy");
-  }
-
   if (salary === undefined || typeof salary !== "number" || salary < 0) {
     errors.push("salary must be a non-negative number");
   }
 
-  // ---- OBJECT ID ----
-  if (!companyId || !mongoose.Types.ObjectId.isValid(companyId)) {
-    errors.push("Valid companyId is required");
-  }
 
   // ---- FAIL FAST ----
   if (errors.length > 0) {

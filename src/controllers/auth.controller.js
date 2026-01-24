@@ -1,14 +1,8 @@
 const user = require('../models/auth/auth.model');
 const bcrypt = require('bcrypt');
-const {
-  validateLoginData,
-  validateRegistrationData
-} = require('../middlewares/validators/authdata.validator.js');
 
 const login = async (req, res) => {
   try {
-    // Validate the login data
-    validateLoginData(req.body);
 
     // Find the user by email
     const currUser = await user
@@ -54,9 +48,6 @@ const register = async (req, res) => {
       return res.status(400).send("User already exists with this email");
     }
 
-    // Validate user data
-    validateRegistrationData(req.body);
-
     // Encrypt password
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -64,6 +55,7 @@ const register = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
+      role: req.body.role
     });
 
     await newUser.save();
