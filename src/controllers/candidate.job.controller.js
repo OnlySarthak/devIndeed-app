@@ -6,8 +6,8 @@ const { verifyApplicationData, verifyExistingApplication } = require('../service
 const listAvailableJobs = async (req, res) => {
     try {
         const jobs = await jobModel.find({ isHistory: false })
-        // .populate('companyId', 'name')
-        // .exec();
+        .populate('companyId', 'name')
+        .exec();
 
         console.log(jobs);
         res.status(200).json(jobs);

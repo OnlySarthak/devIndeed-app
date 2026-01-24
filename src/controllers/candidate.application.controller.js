@@ -13,9 +13,9 @@ const listOfApplicationsforCandidate = async (req, res) => {
 
 const deleteApplication = async (req, res) => {
     try {
+        const { applicationId } = req.params;
         const application = await applicationModel.findOneAndDelete({
-            candidateId: req.user.id,
-            jobId: req.params.jobId
+            _id: applicationId
         });
         if (!application) {
             return res.status(404).json({ error: "Application not found" });
